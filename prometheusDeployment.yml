@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prometheus-deploy
+  labels:
+    app: prometheus
+spec:
+  selector:
+    matchLabels:
+      app: prometheus
+  replicas: 2
+  template:
+    metadata:
+      name: prometheus-pod
+      labels:
+        app: prometheus
+    spec:
+      containers:
+      - name: prometheus-con
+        image: ashwani2399/prometheus:v1
+        volumeMounts:
+        - name: prometheus-pvc
+          mountPath: /prometheus/
+      volumes:
+      - name: prometheus-pvc
+        persistentVolumeClaim:
+          claimName: prometheus-persistent-volume
